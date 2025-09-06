@@ -36,7 +36,7 @@ book.title
 'Nineteen Eighty-Four'
 # Title updated successfully
 
-
+from bookshelf.models import Book"
 # delete a book
 
 book = Book.objects.get(title="Nineteen Eighty-Four")
