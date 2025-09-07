@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from .models import UserProfile
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts   import redirect
 
 class MemberView(DetailView):
     

@@ -9,6 +9,8 @@ from django.contrib.auth.views import LogoutView
 
 
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('books/', views.list_books, name='list-books'),
@@ -16,4 +18,7 @@ urlpatterns = [
     path("register/", views.register(), name="register"),
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
     path("logout/", LogoutView.as_view(template_name='relationship_app/logout.html'), name="logout"),
+    path("admin-view", views.AdminView.as_view(), name="admin-view"),
+    path("librarian-view", views.LibrarianView.as_view(), name="librarian-view"),
+    path("member-view", views.MemberView.as_view(), name="member-view"),
 ]
