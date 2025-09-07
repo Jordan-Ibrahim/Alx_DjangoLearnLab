@@ -7,6 +7,8 @@ from django.contrib.auth.views import logout
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts   import redirect
 
 class RegisterView(CreateView):
     form_class = UserCreationForm
@@ -34,4 +36,23 @@ class LibraryDetailView(DetailView):
     context["books"] = self.object.books.all()
     return context
   
+def is_admin(user):
+    return hasattr(user, "userprofile") and user.userprofile.role == "Admin"
 
+@user_passes_test(is_admin)
+def admin_view(request):
+    return render(request, "relationship_app/admin_view.html")
+
+def is_member(user):
+    return hasattr(user, "userprofile") and user.userprofile.role == "Member"
+
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, "relationship_app/member_view.html")
+
+def is_librarian(user):
+    return hasattr(user, "userprofile") and user.userprofile.role == "Librarian"
+
+@user_passes_test(is_admin)
+def librarian_view(request):
+    return render(request, "relationship_app/librarian_view.html")
