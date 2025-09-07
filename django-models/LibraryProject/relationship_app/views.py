@@ -34,38 +34,4 @@ class LibraryDetailView(DetailView):
     context["books"] = self.object.books.all()
     return context
   
-class AdminView(DetailView):
-  
-  model = role
-  template_name = 'relationship_app/admin_view.html'
 
-  def get_context_data(self, **kwargs):
-   
-    context = super().get_context_data(**kwargs)  
-    library = self.get_object()  
-    context["books"] = self.object.books.all()
-    return context
-  
-class LibrarianView(DetailView):
-    
-    model = role
-    template_name = 'relationship_app/librarian_view.html'
-    
-    def get_context_data(self, **kwargs):
-     
-        context = super().get_context_data(**kwargs)  
-        library = self.get_object()  
-        context["books"] = self.object.books.all()
-        return context
-    
-class MemberView(DetailView):
-    
-    model = role
-    template_name = 'relationship_app/member_view.html'
-    
-    def get_context_data(self, **kwargs):
-     
-        context = super().get_context_data(**kwargs)  
-        library = self.get_object()  
-        context["books"] = self.object.books.all()
-        return context
