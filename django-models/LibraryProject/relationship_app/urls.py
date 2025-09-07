@@ -21,4 +21,7 @@ urlpatterns = [
     path("admin-view", views.AdminView.as_view(), name="admin-view"),
     path("librarian-view", views.LibrarianView.as_view(), name="librarian-view"),
     path("member-view", views.MemberView.as_view(), name="member-view"),
+    path("add_book/", views.add_book, name="add_book"),
+    path("edit_book/<int:pk>/", views.edit_book, name="edit_book"),
+    path("delete_book/<int:pk>/", views.delete_book, name="delete_book"),
 ]
