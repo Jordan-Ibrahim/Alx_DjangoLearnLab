@@ -25,8 +25,8 @@ class Librarian(models.Model):
     def __str__(self):
         return self.name
 
-class UserProfile (models.Model):
-    role = models.CharField('Admion/Librarian/Member', max_length=200)
+class UserProfile(models.Model):
+    role = models.CharField('Admin/Librarian/Member', max_length=200)
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
     def __str__(self):
         return self.user.username
