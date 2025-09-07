@@ -3,8 +3,8 @@ from django.urls import path
 from .views import list_books
 from . import views
 from .views import SignUpView
-from .views import LoginView
-from .views import LogoutView
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LogoutView
 
 
 
