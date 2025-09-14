@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 from django.db import models
+from django.contrib.auth.models import Permission
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
@@ -38,3 +39,11 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self.create_user(username, email, password, **extra_fields)
+    
+    class Meta:
+        permissions = [
+            ("can_view_post", "Can view post"),
+            ("can_create_post", "Can create post"),
+            ("can_edit_post", "Can edit post"),
+            ("can_delete_post", "Can delete post"),
+        ]

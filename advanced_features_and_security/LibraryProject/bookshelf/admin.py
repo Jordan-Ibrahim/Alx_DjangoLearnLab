@@ -33,3 +33,4 @@ admin.site.register(Book, BookAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)
 
 
+
