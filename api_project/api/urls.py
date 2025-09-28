@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
-from api.views import BookViewset
+from api.views import BookViewSet
 from rest_framework import routers
 from .views import BookList
 
 # Router instance
 router = routers.DefaultRouter()
-router.register(r'books', BookViewset, basename='book')  # simpler name
+router.register(r'books', BookViewSet, basename='book')  # simpler name
 
 urlpatterns = [
     
