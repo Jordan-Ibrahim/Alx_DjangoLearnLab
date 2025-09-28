@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.utils import timezone
 from .models import Author, Book
+from datetime import date
 
 # BookSerializer: Serializes all fields of the Book model
 class BookSerializer(serializers.ModelSerializer):
