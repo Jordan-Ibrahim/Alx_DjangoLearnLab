@@ -3,7 +3,9 @@ from django.urls import path, include
 from django.urls import path
 from blog import views
 from django.contrib.auth import views as auth_views
-from blog import SignUpView, profile_view
+from views import SignUpView, profile_view, PostDetailView, add_comment, CommentEditView, CommentDeleteView
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -17,5 +19,8 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("register/", SignUpView.as_view(), name="register"),
     path("profile/", profile_view, name="profile"),
+    path('posts/<int:pk>/comment/new/', add_comment, name='add_comment'),
+    path('comment/<int:pk>/edit/', CommentEditView.as_view(), name='edit_comment'),
+    path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
 
 ]
