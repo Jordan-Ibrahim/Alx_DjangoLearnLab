@@ -64,18 +64,6 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def get_success_url(self):
         return reverse('blog:post_detail', kwargs={'pk': self.object.post.pk}) + '#comments'
 
-class CommentEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Comment
-    form_class = CommentForm
-    template_name = 'blog/comment_edit.html'
-
-    def test_func(self):
-        comment = self.get_object()
-        return comment.author == self.request.user
-
-    def get_success_url(self):
-        return reverse('blog:post_detail', kwargs={'pk': self.object.post.pk}) + '#comments'
-
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
     template_name = 'blog/comment_confirm_delete.html'
