@@ -98,17 +98,18 @@ class PostListView(ListView):
     ordering = ['-published_date']
     paginate_by = 10
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        query = self.request.GET.get('q')
+def search_results(request):
+    query = request.GET.get('q')  # Get search keyword from the URL
+    results = []
 
-        if query:
-            queryset = queryset.filter(
-                Q(title__icontains=query) |       
-                Q(content__icontains=query) |     
-                Q(tags__name__icontains=query)    
-            ).distinct()
-        return queryset
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |       # Match keyword in title
+            Q(content__icontains=query) |     # Match keyword in content
+            Q(tags__name__icontains=query)    # Match keyword in tags
+        ).distinct()                          # Avoid duplicate posts
+
+    return render(request, 'blog/search_results.html', {'query': query, 'results': results})
 
 class PostDetailView(DetailView):
     model = Post
