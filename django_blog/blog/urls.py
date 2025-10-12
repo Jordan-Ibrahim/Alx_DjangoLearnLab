@@ -1,11 +1,11 @@
 from django.contrib import admin
-from django.urls import path, include
 from django.urls import path
-from blog import views
+from . import views
 from django.contrib.auth import views as auth_views
-from views import SignUpView, profile_view, PostDetailView, add_comment, CommentDeleteView, CommentCreateView, CommentUpdateView
 from .views import (
-    PostListView, PostByTagListView, TagPostListView,
+    SignUpView, profile_view, PostDetailView, add_comment,
+    CommentDeleteView, CommentCreateView, CommentUpdateView,
+    PostByTagListView, TagPostListView, PostListView, search_results,
 )
 
 app_name = 'blog'
@@ -13,7 +13,6 @@ app_name = 'blog'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('blog.urls', namespace='blog')),
     path("post/", views.PostListView.as_view(), name='post_list'),
     path("post/new/", views.PostCreateView.as_view(), name='post_create'),
     path("post/<int:pk>/", views.PostDetailView.as_view(), name='post_detail'),
@@ -28,8 +27,7 @@ urlpatterns = [
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='update_comment'),
     path('', PostListView.as_view(), name='post_list'),
-    path('tags/<str:tag_name>/', TagPostListView.as_view(), name='tag_posts'),
-    path("tags/<slug:tag_slug>/", PostByTagListView.as_view)
-
-
+    path('tags/<slug:tag_slug>/', TagPostListView.as_view(), name='tag_posts'),
+    path("tags/<slug:tag_slug>/", PostByTagListView.as_view, name='posts_by_tag'),
+    path('search/', search_results, name='search_results'),
 ]

@@ -8,7 +8,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q 
-
+from taggit.models import Tag
 # Create your views here.
 
 class SignUpView(CreateView):
@@ -149,6 +149,24 @@ class PostDeleteView(LoginRequiredMixin, AuthorRequiredMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return post.author == self.request.user
+    
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        # Get the tag name from the URL
+        tag_name = self.kwargs.get('tag_name')
+        # Find the tag object or return 404 if not found
+        self.tag = get_object_or_404(Tag, name=tag_name)
+        # Return all posts with this tag
+        return Post.objects.filter(tags__name__iexact=tag_name)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = self.tag
+        return context
     
 
 
