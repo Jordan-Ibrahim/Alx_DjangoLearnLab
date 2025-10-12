@@ -4,7 +4,12 @@ from django.urls import path
 from blog import views
 from django.contrib.auth import views as auth_views
 from views import SignUpView, profile_view, PostDetailView, add_comment, CommentDeleteView, CommentCreateView, CommentUpdateView
+from .views import (
+    PostListView,
+    TagPostListView,
+)
 
+app_name = 'blog'
 
 
 urlpatterns = [
@@ -23,5 +28,8 @@ urlpatterns = [
     path('comment/<int:pk>/edit/', CommentUpdateView.as_view(), name='comment_edit'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='update_comment'),
+    path('', PostListView.as_view(), name='post_list'),
+    path('tags/<str:tag_name>/', TagPostListView.as_view(), name='tag_posts'),
+
 
 ]

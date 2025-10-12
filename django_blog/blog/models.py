@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
+from django.views.generic import ListView
+from django.db.models import Q
+from .models import Post, Tag
 
 User = settings.AUTH_USER_MODEL
 
@@ -33,6 +36,37 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author} on {self.post}'
+    
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+    paginate_by = 5
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Post.objects.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(tags__name__icontains=query)
+            ).distinct()
+        return Post.objects.all()
+
+
+class TagPostListView(ListView):
+    model = Post
+    template_name = 'blog/tag_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        self.tag = Tag.objects.get(name=self.kwargs['tag_name'])
+        return Post.objects.filter(tags=self.tag)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = self.tag
+        return context
 
 
 
