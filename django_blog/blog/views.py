@@ -7,6 +7,7 @@ from .forms import PostForm, SignUpForm, ProfileForm, CommentForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q 
 
 # Create your views here.
 
@@ -96,6 +97,18 @@ class PostListView(ListView):
     context_object_name = 'post'
     ordering = ['-published_date']
     paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('q')
+
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |       
+                Q(content__icontains=query) |     
+                Q(tags__name__icontains=query)    
+            ).distinct()
+        return queryset
 
 class PostDetailView(DetailView):
     model = Post
