@@ -19,7 +19,7 @@ class PostForm(forms.ModelForm):
                 'placeholder': 'Write your post content here...',
                 'rows': 8,
             }),
-            'tags': TagWidget(attrs={'class': 'form-control'}),
+            'tags': TagWidget(),
         }
         
         labels = {
