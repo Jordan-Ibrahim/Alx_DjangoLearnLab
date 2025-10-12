@@ -3,11 +3,12 @@ from .models import Post
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Comment
+from taggit.forms import TagWidget
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
         widgets = {
            'title': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -17,6 +18,10 @@ class PostForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Write your post content here...',
                 'rows': 8,
+            }),
+            'tags': TagWidget(attrs={
+                'class': 'form-control',
+                'placeholder': 'Add tags separated by commas',
             }),
         }
         
