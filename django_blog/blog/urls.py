@@ -5,8 +5,7 @@ from blog import views
 from django.contrib.auth import views as auth_views
 from views import SignUpView, profile_view, PostDetailView, add_comment, CommentDeleteView, CommentCreateView, CommentUpdateView
 from .views import (
-    PostListView,
-    TagPostListView,
+    PostListView, PostByTagListView, TagPostListView,
 )
 
 app_name = 'blog'
@@ -30,6 +29,7 @@ urlpatterns = [
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='update_comment'),
     path('', PostListView.as_view(), name='post_list'),
     path('tags/<str:tag_name>/', TagPostListView.as_view(), name='tag_posts'),
+    path("tags/<slug:tag_slug>/", PostByTagListView.as_view)
 
 
 ]
