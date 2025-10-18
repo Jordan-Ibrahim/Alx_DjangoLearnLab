@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions, filters
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
@@ -44,3 +46,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def user_feed(request):
+    user = request.user
+    following_users = user.following.all()
+    feed_posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+    serializer = PostSerializer(feed_posts, many=True)
+    return Response(serializer.data)
