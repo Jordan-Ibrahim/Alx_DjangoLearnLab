@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets, permissions, filters, status
+from rest_framework import viewsets, permissions, filters, status, generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -63,10 +63,10 @@ def user_feed(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    post = generics.get_object_or_404(Post, pk=pk)
     user = request.user
 
-    like, created = Like.objects.get_or_create(user=user, post=post)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
 
     if not created:
         return Response({'detail': 'You already liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -87,10 +87,10 @@ def like_post(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def unlike_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    user = request.user
+    post = generics.get_object_or_404(Post, pk=pk)
 
-    like = Like.objects.filter(user=user, post=post).first()
+
+    like = Like.objects.filter(user=request.user, post=post).first()
     if not like:
         return Response({'detail': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
 
